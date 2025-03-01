@@ -5,9 +5,9 @@
 # Contributor: Thomas Baechler <thomas@archlinux.org>
 
 pkgbase=nvidia-utils
-pkgname=('nvidia-utils' 'opencl-nvidia' 'nvidia-dkms' 'nvidia-open-dkms')
+pkgname=('nvidia-utils' 'opencl-nvidia' 'nvidia-open-dkms')
 pkgver=570.124.04
-pkgrel=1
+pkgrel=3
 arch=('x86_64')
 url="http://www.nvidia.com/"
 license=('custom')
@@ -21,7 +21,7 @@ source=('nvidia-drm-outputclass.conf'
         'systemd-suspend-override.conf'
         'nvidia-sleep.conf'
         "https://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
-        "$pkgname-$pkgver.tar.gz::https://github.com/NVIDIA/open-gpu-kernel-modules/archive/refs/tags/${pkgver}.tar.gz"
+        "$pkgname-$pkgver.tar.gz::https://github.com/NeroReflex/open-gpu-kernel-modules/archive/refs/tags/D0_probe.tar.gz"
         0001-Enable-atomic-kernel-modesetting-by-default.patch
         0003-Add-IBT-support.patch)
 
@@ -32,7 +32,7 @@ sha512sums=('de7116c09f282a27920a1382df84aa86f559e537664bb30689605177ce37dc50677
             '55def6319f6abb1a4ccd28a89cd60f1933d155c10ba775b8dfa60a2dc5696b4b472c14b252dc0891f956e70264be87c3d5d4271e929a4fc4b1a68a6902814cee'
             'c7fea39d11565f05a507d3aded4e9ea506ef9dbebf313e0fc8d6ebc526af3f9d6dec78af9d6c4456c056310f98911c638706bccdd9926d07f492615569430455'
             '35fb1938a08586d902eb290aee04c5c6b570cc647354e49880e3c8715654ac1ab8c8cbe08e5b3c542fd9b2c36f7683454221b11625754980a6138a58c6363b40'
-            '7a1b66770b62b784650bb62b9f4543ab873b95b5c42bf5e688eb7a5a6133322b143f61bb34cbd7fd112030069f0f3058946e31c38f883d3e1c8bb31033eb464b'
+            'SKIP'
             '0bb89b9037f0baa9aae1ff8e70c9c93896f03fd0cc380eea4b0dc094a6991c3ad6738c9fbbaa42d8b5a544f77dc91c0e6401b1501c5970c576d5efbc0de8dd34'
             '42f621179d4fd9bf608f0d84b9019f5a5fdf5d92d68d22ce9b9a9add1cad1c90dcb3764db68e0b9bc7e902bb6b955c59563ea6d4f39f2e39a340387e4d5deb82')
 
@@ -136,20 +136,6 @@ package_opencl-nvidia() {
 
     mkdir -p "${pkgdir}/usr/share/licenses"
     ln -s nvidia-utils "${pkgdir}/usr/share/licenses/opencl-nvidia"
-}
-
-package_nvidia-dkms() {
-    pkgdesc="NVIDIA kernel modules - module sources"
-    depends=('dkms' "nvidia-utils=$pkgver" 'libglvnd')
-    provides=('NVIDIA-MODULE' 'nvidia')
-    conflicts=('NVIDIA-MODULE' 'nvidia')
-
-    cd ${_pkg}
-
-    install -dm 755 "${pkgdir}"/usr/src
-    cp -dr --no-preserve='ownership' kernel "${pkgdir}/usr/src/nvidia-${pkgver}"
-
-    install -Dm644 "${srcdir}/${_pkg}/LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }
 
 package_nvidia-utils() {
