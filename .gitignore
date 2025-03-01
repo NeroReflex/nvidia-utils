@@ -1,1 +1,5 @@
 *.run
+/src/**
+/pkg/**
+*.tar.zst
+/nvidia-utils-*.tar.gz
