@@ -4,12 +4,12 @@
 # Contributor: Vasiliy Stelmachenok <ventureo@yandex.ru>
 # Contributor: Thomas Baechler <thomas@archlinux.org>
 
-custom_tag=D0_probe
+custom_tag=nvpci
 
 pkgbase=nvidia-utils
 pkgname=('nvidia-utils' 'opencl-nvidia' 'nvidia-open-dkms')
 pkgver=570.124.04
-pkgrel=3
+pkgrel=4
 arch=('x86_64')
 url="http://www.nvidia.com/"
 license=('custom')
@@ -330,5 +330,5 @@ package_nvidia-open-dkms() {
   cp -dr --no-preserve='ownership' open-gpu-kernel-modules-dkms "${pkgdir}/usr/src/nvidia-$pkgver"
   mv "${pkgdir}/usr/src/nvidia-$pkgver/kernel-open/dkms.conf" "${pkgdir}/usr/src/nvidia-$pkgver/dkms.conf"
 
-  install -Dm644 open-gpu-kernel-modules-${pkgver}/COPYING "$pkgdir"/usr/share/licenses/${pkgname}/LICENSE
+  install -Dm644 open-gpu-kernel-modules-${custom_tag}/COPYING "$pkgdir"/usr/share/licenses/${pkgname}/LICENSE
 }
