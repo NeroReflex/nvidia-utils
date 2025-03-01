@@ -4,6 +4,8 @@
 # Contributor: Vasiliy Stelmachenok <ventureo@yandex.ru>
 # Contributor: Thomas Baechler <thomas@archlinux.org>
 
+custom_tag=D0_probe
+
 pkgbase=nvidia-utils
 pkgname=('nvidia-utils' 'opencl-nvidia' 'nvidia-open-dkms')
 pkgver=570.124.04
@@ -21,7 +23,7 @@ source=('nvidia-drm-outputclass.conf'
         'systemd-suspend-override.conf'
         'nvidia-sleep.conf'
         "https://us.download.nvidia.com/XFree86/Linux-x86_64/${pkgver}/${_pkg}.run"
-        "$pkgname-$pkgver.tar.gz::https://github.com/NeroReflex/open-gpu-kernel-modules/archive/refs/tags/D0_probe.tar.gz"
+        "$pkgname-$pkgver.tar.gz::https://github.com/NeroReflex/open-gpu-kernel-modules/archive/refs/tags/${custom_tag}.tar.gz"
         0001-Enable-atomic-kernel-modesetting-by-default.patch
         0003-Add-IBT-support.patch)
 
@@ -77,13 +79,13 @@ DEST_MODULE_LOCATION[4]="/kernel/drivers/video"' dkms.conf
     # Gift for linux-rt guys
     sed -i 's/NV_EXCLUDE_BUILD_MODULES/IGNORE_PREEMPT_RT_PRESENCE=1 NV_EXCLUDE_BUILD_MODULES/' dkms.conf
 
-    cd "$srcdir"/open-gpu-kernel-modules-${pkgver}
+    cd "$srcdir"/open-gpu-kernel-modules-${custom_tag}
 
     # Enable modeset and fbdev as default
     # This avoids various issue, when Simplefb is used
     # https://gitlab.archlinux.org/archlinux/packaging/packages/nvidia-utils/-/issues/14
     # https://github.com/rpmfusion/nvidia-kmod/blob/master/make_modeset_default.patch
-    patch -Np1 < "$srcdir"/0001-Enable-atomic-kernel-modesetting-by-default.patch -d "${srcdir}/open-gpu-kernel-modules-${pkgver}/kernel-open"
+    patch -Np1 < "$srcdir"/0001-Enable-atomic-kernel-modesetting-by-default.patch -d "${srcdir}/open-gpu-kernel-modules-${custom_tag}/kernel-open"
 
     # Fix for https://bugs.archlinux.org/task/74886
     patch -Np1 --no-backup-if-mismatch -i "$srcdir"/0003-Add-IBT-support.patch
@@ -118,7 +120,7 @@ DEST_MODULE_LOCATION[4]="/kernel/drivers/video"' kernel-open/dkms.conf
     sed -i 's/NV_EXCLUDE_BUILD_MODULES/IGNORE_PREEMPT_RT_PRESENCE=1 NV_EXCLUDE_BUILD_MODULES/' kernel-open/dkms.conf
 
     # Clean version for later copying for DKMS
-    cp -r ../open-gpu-kernel-modules-${pkgver} "$srcdir"/open-gpu-kernel-modules-dkms
+    cp -r ../open-gpu-kernel-modules-${custom_tag} "$srcdir"/open-gpu-kernel-modules-dkms
 }
 
 package_opencl-nvidia() {
